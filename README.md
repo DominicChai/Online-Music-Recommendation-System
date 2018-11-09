@@ -50,5 +50,3 @@ Django框架采用MVC模式（Model，View和Control）
 2.	将从数据库中获取的JSON文件传给template下的HTML文件中的JS，JS局部更新页面
 
 Note：HTML文件中嵌入了主要的J-Query代码
-Note：主要的CSS代码，音乐播放器的JS代码，音乐的音频文件和音乐的歌词文件，在static之下，如下图：
- 
