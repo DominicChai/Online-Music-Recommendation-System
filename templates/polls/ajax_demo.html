@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+</head>
+<body>
+    <p>请输入两个数字</p>
+    <form action="/demo_add/" method="get">
+        a: <input type="text" id="a" name="a"> <br>
+        b: <input type="text" id="b" name="b"> <br>
+        <p>result: <span id='result'></span></p>
+        <button type="button" id='sum'>提交</button>
+
+        <div>
+        <span id="music">
+            this is the query section
+
+        </span>
+            </div>
+        <button type='button' id="get">查询</button>
+    </form>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
+</script>
+
+    <script>
+        $('#get').click(function() {
+            $.get('../getdata/',function(data){
+                $('#music').text(data.music);
+                alert(data.music);
+            })
+        });
+
+//这里是关键点 .ready 函数好像监听器。
+
+//jq的处理函数，当点击提交按钮时执行。
+            $("#sum").click(function () {
+//得到页面中id为a和b两个标签的值
+                var a = $("#a").val();
+                var b = $("#b").val();
+//向服务器发送get请求，请求地址为demo_add
+                $.get("../demo_add/", { 'a': a, 'b': b }, function (ret) {
+//请求结果为ret，将请求结果赋值给id为result的节点
+                    $('#result').html(ret)
+                })
+            });
+
+    </script>
+</body>
+</html>
+
+
+

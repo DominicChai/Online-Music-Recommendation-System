@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+<div>This is manage song page for manager</div>
+<form action="http://127.0.0.1:8000/polls/managesong/" role="form"  method="post" enctype="multipart/form-data" accept-charset="utf-8">
+        {% csrf_token %}
+    <ul>
+    <label >创建新的歌曲：</label>
+    <li><input type = 'text' placeholder="输入歌曲名" name = 'music_nm'></li>
+        <li><input type = 'text' placeholder="输入歌手名" name = 'singer_name'></li>
+        <li><input type = 'text' placeholder="输入出版商名" name = 'publisher_name'></li>
+   <li> <input type = 'text' placeholder="输入歌曲类型" name = 'type'> </li>
+        <li><span>上传歌曲文件</span><input type ='file' name="audio"></li>
+        <li><span>上传歌词文件</span><input type ='file' name="lyrics"></li>
+
+
+    <input type = 'submit' placeholder="创建歌曲" value="创建歌曲">
+        </ul>
+    </form>
+{% if music_name %}
+    <span>You have added < {{music_name}} > successfully! </span>
+{% endif %}
+
+</body>
+</html>
+
+
+
+
+
+

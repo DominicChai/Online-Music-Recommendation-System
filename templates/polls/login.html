@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+
+
+<body>
+<div style="width:20%;border:dotted; border-color: #555555">
+
+<table>
+    <form action="" method="post">{% csrf_token %}
+
+        <tr>
+            <td>
+                <label >用户名:</label>
+            </td>
+                <td>
+
+                <input type = 'text' placeholder="输入用户名" name = 'account'>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label >密码:</label>
+            </td>
+            <td>
+              <input type = 'password' placeholder="输入密码" name = 'password'>
+
+            </td>
+
+        </tr>
+
+          <tr>
+
+              <td>
+                   <input type = 'submit' placeholder="Login" value="登录">
+              </td>
+          </tr>
+    </form>
+</table>
+    {% if errors %}
+        <ul>
+        <li>
+
+            {% for error in errors %}
+             <p style="color: red;">
+                {{error}}
+             </p>
+              {% endfor %}
+        </li>
+    {% endif %}
+        </ul>
+</div>
+</body>
+</html>
+</body>
+</html>

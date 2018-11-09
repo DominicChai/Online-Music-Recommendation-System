@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../../static/polls/APlayer.min.css">
+<script src="../../static/polls/APlayer.js"></script>
+
+</head>
+<body style="background-color: White;width:80%;margin:auto">
+<div style="background-color: white">
+<div id="self'">
+{% if request.session.is_login %}
+<ul>
+    <li class="u-info"><a id="username" style="display: inline;">当前在线:{{ request.session.user_name }}</a></li>
+      <li><a href="http://127.0.0.1:8000/polls/logout/">登出</a></li>
+ {% else %}
+      <li><a href="http://127.0.0.1:8000/polls/login/">登录</a></li>
+      <li><a href="http://127.0.0.1:8000/polls/register/">注册</a></li>
+{% endif %}
+</ul>
+
+
+
+<div style="border: dotted; border-color: #555555;"> 搜索
+ <form action="http://127.0.0.1:8000/polls/get_songs/" method="post">
+        {% csrf_token %}
+
+
+     <span >按歌曲名查询：</span>
+     {% if song_query_value%}
+        <input type = 'text' placeholder="输入歌曲名关键词" name = 'song_name' value="{{song_query_value}}">
+     {% else %}
+        <input type = 'text' placeholder="输入歌曲名关键词" name = 'song_name'>
+     {% endif %}
+
+     <span >按照歌手名查询：</span>
+     {% if singer_query_value%}
+        <input type = 'text' placeholder="输入歌手名关键词" name = 'singer_name' value="{{singer_query_value}}">
+     {% else %}
+        <input type = 'text' placeholder="输入歌手名关键词" name = 'singer_name'>
+     {% endif %}
+
+
+
+                   <input type = 'submit' placeholder="查询" value="查询">
+
+
+ </form>
+</div>
+
+<div style="border:dotted;border-color: #555555;width:50%;display: inline-block" >歌曲列表
+{% if music_list %}
+    <ul style="height:280px;">
+
+
+    {% for each_music in music_list %}
+
+
+            <li><a>{{ each_music.name }}> {{each_music.singer.name}} >{{each_music.type}}}
+
+
+            <button class="play_music" name="{{ each_music.id }}">播放</button>
+            <button type="submit" class="collect" name=" {{ each_music.id }}">收藏到歌单</button>
+            <button>评论</button>
+        </a>
+
+
+
+                <span>打分:</span>
+                <button name="{{ each_music.id }}" class="mark">1</button>
+                <button name="{{ each_music.id }}" class="mark">2</button>
+                <button name="{{ each_music.id }}" class="mark">3</button>
+                <button name="{{ each_music.id }}" class="mark">4</button>
+                <button name="{{ each_music.id }}" class="mark">5</button>
+
+
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No music are available.</p>
+{% endif %}
+    </div>
+
+
+<div id="main" style="width:45%;display:inline-block;height:40%;">
+	<div class="demo" style="width:100%">
+
+        <div id="player3" class="aplayer" style="width:100%" >
+            <pre class="aplayer-lrc-content">
+[ti:Dying In The Sun]
+[ar:The Cranberries]
+[al:Bury the Hatchet]
+[by:]
+[offset:0]
+[00:00.29]Dying In The Sun (����������ȥ) - The Cranberries (С��ݮ�ֶ�)
+[00:01.73]Written by��Dolores O'Riordan
+[00:03.23]
+[00:23.47]Do you remember
+[00:28.87]The things we used to say
+[00:33.52]
+[00:35.33]I feel so nervous
+[00:40.21]When I think of yesterday
+[00:44.83]
+[00:46.95]How could I let things
+[00:51.99]Get to me so bad
+[00:57.09]
+[00:58.71]How did I let things get to me
+[01:07.31]
+[01:08.43]Like dying in the sun
+[01:11.25]Like dying in the sun
+[01:14.07]Like dying in the sun
+[01:16.85]Like dying
+[01:18.85]
+[01:19.73]Like dying in the sun
+[01:22.53]Like dying in the sun
+[01:25.32]Like dying in the sun
+[01:28.13]Like dying
+[01:29.97]
+[01:44.24]Will you hold on to me
+[01:50.11]I am feeling frail
+[01:54.37]
+[01:56.04]Will you hold on to me
+[02:01.68]We will never fail
+[02:05.97]
+[02:07.65]I wanted to be so perfect you see
+[02:18.13]
+[02:19.39]I wanted to be so perfect
+[02:27.33]
+[02:29.10]Like dying in the sun
+[02:31.92]Like dying in the sun
+[02:34.72]Like dying in the sun
+[02:37.55]Like dying
+[02:39.38]
+[02:40.42]Like dying in the sun
+[02:43.22]Like dying in the sun
+[02:45.99]Like dying in the sun
+[02:48.75]Like dying
+            </pre>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="info">选择你要加入的歌单
+    </div>
+
+<div style="border:dotted; border-color: #555555; width:50%; margin:0;padding:0;float:left">用户歌单管理
+<form action="http://127.0.0.1:8000/polls/get_songs/" method="post">
+        {% csrf_token %}
+        <tr>
+            <td>
+                <label >创建新的歌单：</label>
+            </td>
+            <td>
+                <input type = 'text' placeholder="输入歌单名" name = 'new_song_list_name'>
+            </td>
+        </tr>
+
+          <tr>
+
+              <td>
+                   <input type = 'submit' placeholder="创建" value="创建">
+              </td>
+          </tr>
+    </form>
+
+{% if song_list %}
+
+
+        <div>已有歌单：
+    {% for each_song_list in song_list %}
+            <form action="http://127.0.0.1:8000/polls/get_songs/" method="post">
+                {% csrf_token %}
+
+
+                <input type="submit" name="seleted_song_list_name" value="{{ each_song_list.songlistname }}" />
+
+
+            </form>
+
+    {% endfor %}
+            </div>
+
+
+{% else %}
+    <p>No song list are available.</p>
+{% endif %}
+</div>
+
+<div style="border:dotted; border-color: #555555; width:48% ;margin:0;padding:0;float:right">用户歌单的歌曲列表
+    <ul>
+    {% if seleted_song_list_songs %}
+        <li>我的 &nbsp {{ song_list_selected }}</li>
+
+        {% for each_song in seleted_song_list_songs %}
+         <li> {{ each_song }}</li>
+        {% endfor %}
+
+    {% endif %}
+        </ul>
+
+
+</div>
+
+</div>
+
+</div>
+
+<div style="float:left;width:100%;border:dotted; border-color: #555555">
+    推荐系统终于来啦
+    <button id="recommend" name="{{ request.session.user_name }}" >推荐一首歌曲给我</button>
+    <div>和我最相似的一个用户是：</div>
+    <div id="similar_user_name"></div>
+    <div>推荐的歌曲是：</div>
+    <div id="recommanded_song"></div>
+</div>
+
+</body>
+</html>
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+
+    <script>
+
+        $('#recommend').click(function() {
+            var element = $(this)
+            var user_name = element.attr('name')
+            //alert(user_name)
+
+            $.get("../recommand/", {'user_name': user_name}, function (data) {
+                $('#similar_user_name').text(data['similar_user_name']);
+
+                var songname = data['recommanded_song'];
+                var singername = data['recommanded_song_singer'];
+                var type = data['recommanded_song_type'];
+                var id = data['recommanded_song_id'];
+
+
+                $('#recommanded_song').text(songname+'>'+singername+'>'+type);
+
+            });
+        });
+        //如果有一个button被点击 获取那个button的id
+        $('button.collect').click(function() {
+            var element = $(this)
+            //alert(element.attr('name'))
+            showSonglist(element.attr('name'))
+        })
+        function showSonglist(id) {
+            var elements = $("input[name='seleted_song_list_name']").clone()
+            $('div#info').append(elements.length)
+            elements.each(function(){
+                //创建新的button
+                var name=$(this).attr('value')
+                var button=$("<button class='song_list_for_adding' id=' '></button>")
+                button.attr('id',name)
+                button.text(name)
+                $('div#info').append(button)
+
+
+            $('button.song_list_for_adding').click(function(){
+                var elem = $(this)
+                //alert("now you pick song:"+ id.toString() +"\n"+"and add it into song listL:" + elem.attr('id'))
+                addsong(elem.attr('id'),id)
+                $('div#info').html('选择你要加入的歌单') //消除append的影响
+
+        })
+
+            })
+        }
+        //给定歌单的名字和歌曲的id 把歌曲加入到歌单里去
+        function addsong(song_list_name,music_id){
+            $.get("../song_add/", { 'song_list_name': song_list_name, 'music_id': music_id }, function (ret) {
+                //请求结果为ret，将请求结果赋值给id为result的节点
+                    alert(ret['note']);
+                })
+
+        }
+
+	</script>
+
+<script>
+        var ap3 = new APlayer({
+		element: document.getElementById('player3'),//样式1
+		narrow: false,
+		autoplay: false,
+		showlrc: true,
+		music: {
+			title: 'Dying in the sun',
+			author: 'The Cranberries',
+			url: '../../static/polls/music/dying in the sun.mp3',
+			pic: '../../static/polls/view.jpg'
+		}
+
+	});
+
+    ap3.init();
+    global:ap3; //将现在的播放器对象定义为全局变量 在函数作用域之内关闭就好
+
+
+
+
+	$('button.play_music').click(function(){
+	    var element = $(this)
+        var music_id = Number(element.attr('name'))
+        alert(music_id)
+
+        //获取我要听的歌曲的id
+        //让后端去查询 返回歌曲文件地址和歌词地址
+
+        $.get("../song_play/",{'music_id':music_id},function(data){
+            //alert(data['song_file']);
+            //alert(data['lyric_file']);
+            //alert(data['singer']);
+            var song_file=data['song_file'];
+            var lyric_file=data['lyric_file']; //返回的歌词文件是已经处理好的字符串
+            var singer=data['singer'];
+            //ap3.pause()
+            //window.location.reload()
+            //$('div.demo').html("");
+            //到底怎么更新js对象 切换歌曲
+            //试一下更新部分的html元素 而不更新整个页面
+
+            var lyc=lyric_file;
+
+            $('div.demo').html(" <div id='player3' class='aplayer'>\n" +
+            "            <pre class='aplayer-lrc-content'>\n" + lyc+
+            "           </pre>\n" +
+            "       </div>");
+
+
+
+
+         var ap4 = new APlayer({
+		element: document.getElementById('player3'),//样式1
+		narrow: false,
+		autoplay: false,
+		showlrc: true,
+		music: {
+			title: song_file,
+			author: singer,
+			url: '../../static/polls/music/'+song_file,
+			pic: '../../static/polls/view.jpg'
+		}
+         });
+        ap4.init();
+
+        $('div.demo').reload()
+
+
+
+        })
+
+    });
+
+
+
+</script>
+
+<script>
+
+    $(document).ready(function(){
+
+    if($("#username").text()=='当前在线:_'){
+
+        $("li.u-info").append("<span>&nbsp&nbsp&nbsp您的当前身份是：管理员&nbsp&nbsp&nbsp</span>");
+        $("li.u-info").append("<a style=\"display: inline;\" href='http://127.0.0.1:8000/polls/managesong/'>管理音乐文件</a>");
+
+    }
+    else {
+        $("li.u-info").append('您的当前身份是：普通用户');
+    }
+    });
+
+    $('button.mark').click(function(){
+	    var element = $(this);
+        var mark_score = Number(element.text());
+	    var music_id = Number(element.attr('name'));
+        $.get("../mark/",{'music_id':music_id,'mark':mark_score},function(data){
+            alert(data['note']);
+        });
+    });
+</script>
+
+
